@@ -2,8 +2,12 @@
 from sqlalchemy import create_engine
 import configparser
 import keyring
-import keyring
 import getpass
+from pathlib import Path
+
+# seteamos la dirección del archivo de configuracion
+fileconf = Path('./auth_config.txt')
+config = configparser.ConfigParser()
 
 def conectar_db():
     ''' Crea conexión a db
@@ -35,7 +39,7 @@ def conectar_db():
     return create_engine(sql_url)
 
 
-def set_credenciales():
+def set_credentials():
     ''' Setea las credenciales para conectar_db
     
     Setea el nombre de usuario y la contraseña para conectar_db. Solicita
@@ -50,8 +54,10 @@ def set_credenciales():
     
     '''
     
-    # seteamos la dirección del archivo de configuracion
-    fileconf = 'config.txt'
+    if not fileconf.exists():
+        config.read_string(def_conf)
+        with open(fileconf, 'w') as configfile:
+            config.write(configfile)
     
     # Seteamos el usuario
     usuario = input('Ingrese usuario: ')
@@ -64,6 +70,20 @@ def set_credenciales():
         config.write(configfile)
     
     ## Seteamos el password en sistema
-    keyring.set_password("postgres_ie",
+    keyring.set_password("sqlauth",
                          usuario,
                          getpass.getpass('Ingrese contraseña: '))
+    
+def init_configfile():
+    ''' Initialize the config file '''
+    
+    def_conf = '''
+    [credenciales]
+        usuario=
+        host=
+        puerto=
+        db=
+    '''
+    config.read_string(def_conf)
+    with open(fileconf, 'w') as configfile:
+        config.write(configfile)
