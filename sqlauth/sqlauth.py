@@ -2,88 +2,116 @@
 from sqlalchemy import create_engine
 import configparser
 import keyring
-import getpass
+# import getpass
 from pathlib import Path
 
-# seteamos la dirección del archivo de configuracion
-fileconf = Path('./auth_config.txt')
-config = configparser.ConfigParser()
-
-def conectar_db():
-    ''' Crea conexión a db
+class Sqlauth:
+    ''' Authorization class to manage authentication in SQL Databases
     
-    Crea conexión base de datos
+    Let you handle and save SQL DB authentication configuration information. 
     
     Args:
-        NULL
+        fileconf (str): String path to config file
+        reset_file (bool): Remove `fileconf` before create a new one.
         
-    Returns:
-        Return an _engine.Engine instance
-    
+    Attributes:
+         self.fileconf (Path): ...
+         config (ConfigParser): ...
     '''
-    fileconf='config.txt'
-    
-    ## Cargamos configuraciones
-    config = configparser.ConfigParser()
-    config.read(fileconf)
-    usuario = config['credenciales']['usuario']
-    host = config['postgres']['host']
-    puerto = config['postgres']['puerto']
-    db = config['db']['db']
-    passwd = keyring.get_password("postgres_ie", usuario)
-    
-    ## Conectamos a db
-    sql_url = 'postgresql://' + usuario + ':' + passwd + '@' + host + \
-              ':' + puerto + '/' + db
-
-    return create_engine(sql_url)
-
-
-def set_credentials():
-    ''' Setea las credenciales para conectar_db
-    
-    Setea el nombre de usuario y la contraseña para conectar_db. Solicita
-    al usuario que ingrese nombre de usuario y contraseña. Guarda usuario
-    en archivo de configuración config.txt.
-    
-    Args:
-        NULL
+    def __init__(self,
+                 fileconf='./auth_config.txt',
+                 reset_file=False):
         
-    Returns:
-        NULL
+        # seteamos la dirección del archivo de configuracion
+        self.fileconf = Path(fileconf)
+        self.config = configparser.ConfigParser()
+        
+        ## Intialize the config file if it does't exist
+        if not self.fileconf.exists() or reset_file:
+            self.__init_configfile()
+        
+        self.config.read(self.fileconf)
+
+
+    def conect_db(self):
+        ''' Crea conexión a db
+        
+        Crea conexión base de datos
+        
+        Args:
+            NULL
+            
+        Returns:
+            Return an _engine.Engine instance
+        
+        '''
+        # fileconf='config.txt'
+        
+        ## Read configuracion
+        sql_server = self.config['credentials']['sql_server']
+        host = self.config['credentials']['host']
+        port = self.config['credentials']['port']
+        user = self.config['credentials']['user']
+        passwd = keyring.get_password("sqlauth", usuario)
+        
+        ## Conectamos a db
+        sql_url = sql_server + '://' + user + ':' + passwd + '@' + host + \
+                  ':' + port + '/' + db_name
     
-    '''
+        return create_engine(sql_url)
     
-    if not fileconf.exists():
-        config.read_string(def_conf)
-        with open(fileconf, 'w') as configfile:
-            config.write(configfile)
     
-    # Seteamos el usuario
-    usuario = input('Ingrese usuario: ')
+    def set_credentials(self, sql_server, host, port, db_name, user, passwd):
+        ''' Setea las credenciales para conectar_db
+        
+        Setea el nombre de usuario y la contraseña para conectar_db. Solicita
+        al usuario que ingrese nombre de usuario y contraseña. Guarda usuario
+        en archivo de configuración config.txt.
+        
+        Args:
+            NULL
+            
+        Returns:
+            NULL
+        
+        '''   
+        
+        # Seting credentials    
+        self.config['credentials']['sql_server'] = sql_server
+        self.config['credentials']['host'] = host
+        self.config['credentials']['port'] = port
+        self.config['credentials']['user'] = user
+        self.config['credentials']['db_name'] = db_name
+        
+        with open(self.fileconf, 'w') as configfile:
+            self.config.write(configfile)
+        
+        ## Seteamos el password en sistema
+        keyring.set_password("sqlauth",
+                             user,
+                             passwd)
     
-    # Guardamos el usuario en config file
-    config = configparser.ConfigParser()
-    config.read(fileconf)
-    config['credenciales']['usuario'] = usuario
-    with open(fileconf, 'w') as configfile:
-        config.write(configfile)
-    
-    ## Seteamos el password en sistema
-    keyring.set_password("sqlauth",
-                         usuario,
-                         getpass.getpass('Ingrese contraseña: '))
-    
-def init_configfile():
-    ''' Initialize the config file '''
-    
-    def_conf = '''
-    [credenciales]
-        usuario=
-        host=
-        puerto=
-        db=
-    '''
-    config.read_string(def_conf)
-    with open(fileconf, 'w') as configfile:
-        config.write(configfile)
+        
+    def __init_configfile(self):
+        ''' Initialize the config file 
+        
+        Create a file named auth_config.txt in the working directory
+        
+        Args:
+            NULL
+            
+        Returns:
+            NULL
+        '''
+        
+        def_conf = '''
+        [credentials]
+            sql_server=
+            host=
+            port=
+            user=
+            db_name=
+        '''
+        self.config.read_string(def_conf)
+        with open(self.fileconf, 'w') as configfile:
+            self.config.write(configfile)
