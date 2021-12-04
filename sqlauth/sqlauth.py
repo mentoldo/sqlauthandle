@@ -69,8 +69,15 @@ class Sqlauth:
         in system keyring.
                 
         Args:
-            NULL
-            
+            dialect (str): The dialect a to config sqlalchemy engine. Some options are `postgresql`,
+                `mysql`, `oracle`, `mssql`. See 
+                Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
+            host (str): Host url of DB server
+            port (str): Port number
+            db_name: Name of database to conect.
+            passwd: Password
+            app: Name of application. It is used to save the password in the system keyring
+                
         Returns:
             NULL
         
