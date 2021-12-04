@@ -51,8 +51,9 @@ class Sqlauth:
         sql_server = self.config['credentials']['sql_server']
         host = self.config['credentials']['host']
         port = self.config['credentials']['port']
+        db_name = self.config['credentials']['db_name']
         user = self.config['credentials']['user']
-        passwd = keyring.get_password("sqlauth", usuario)
+        passwd = keyring.get_password("sqlauth", user)
         
         ## Conectamos a db
         sql_url = sql_server + '://' + user + ':' + passwd + '@' + host + \
