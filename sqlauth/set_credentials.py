@@ -5,14 +5,14 @@ import getpass
 
 def set_credentials():
     auth = Sqlauth()
-    sql_server = input('SQL Server: ')
+    dialect = input('Dialect: ')
     user = input('User: ')
     host = input('Host: ')
     port = input('Port: ')
     db_name = input('Database name: ')
     passwd = getpass.getpass('Password: ')
     
-    auth.set_credentials(sql_server=sql_server,
+    auth.set_credentials(dialect=dialect,
                          host=host,
                          port=port,
                          user=user,
@@ -29,7 +29,7 @@ def gui_set_cred():
       
     # declaring string variable
     # for storing name and password
-    sql_server_var=tk.StringVar()
+    dialect_var=tk.StringVar()
     host_var=tk.StringVar()
     port_var=tk.StringVar()
     db_name_var=tk.StringVar()
@@ -41,7 +41,7 @@ def gui_set_cred():
     # print them on the screen
     def submit():
      
-        sql_server=sql_server_var.get()
+        dialect=dialect_var.get()
         host=host_var.get()
         port=port_var.get()
         db_name=db_name_var.get()
@@ -51,7 +51,7 @@ def gui_set_cred():
         # print("The name is : " + name)
         # print("The password is : " + password)    
         
-        auth.set_credentials(sql_server=sql_server,
+        auth.set_credentials(dialect=dialect,
                              host=host,
                              port=port,
                              db_name=db_name,
@@ -60,8 +60,8 @@ def gui_set_cred():
         root.destroy()
          
     # creating a label for
-    sql_server_label = tk.Label(root, text = 'Sql server type', font=('calibre',10, 'bold'))
-    sql_server_entry = tk.Entry(root,textvariable = sql_server_var, font=('calibre',10,'normal'))
+    dialect_label = tk.Label(root, text = 'Dialect+DBAPI', font=('calibre',10, 'bold'))
+    dialect_entry = tk.Entry(root,textvariable = dialect_var, font=('calibre',10,'normal'))
       
     host_label = tk.Label(root, text = 'Host', font=('calibre',10, 'bold'))
     host_entry = tk.Entry(root,textvariable = host_var, font=('calibre',10,'normal'))
@@ -89,8 +89,8 @@ def gui_set_cred():
     # placing the label and entry in
     # the required position using grid
     # method
-    sql_server_label.grid(row=0,column=0)
-    sql_server_entry.grid(row=0,column=1)
+    dialect_label.grid(row=0,column=0)
+    dialect_entry.grid(row=0,column=1)
     
     host_label.grid(row=1,column=0)
     host_entry.grid(row=1,column=1)
