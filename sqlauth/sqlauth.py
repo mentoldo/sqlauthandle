@@ -34,9 +34,9 @@ class Sqlauth:
 
 
     def conect_db(self):
-        ''' Crea conexión a db
+        ''' Create a SQL DB conection
         
-        Crea conexión base de datos
+        Create a SQL DB conection with object setted parameters
         
         Args:
             NULL
@@ -53,7 +53,7 @@ class Sqlauth:
         port = self.config['credentials']['port']
         db_name = self.config['credentials']['db_name']
         user = self.config['credentials']['user']
-        passwd = keyring.get_password("sqlauth", user)
+        passwd = keyring.get_password(self.config['credentials']['app'], user)
         
         ## Conectamos a db
         sql_url = sql_server + '://' + user + ':' + passwd + '@' + host + \
@@ -62,8 +62,8 @@ class Sqlauth:
         return create_engine(sql_url)
     
     
-    def set_credentials(self, sql_server, host, port, db_name, user, passwd):
-        ''' Setea las credenciales para conectar_db
+    def set_credentials(self, sql_server, host, port, db_name, user, passwd, app='sqlauth'):
+        ''' Set the credentials to connect to SQL DB
         
         Setea el nombre de usuario y la contraseña para conectar_db. Solicita
         al usuario que ingrese nombre de usuario y contraseña. Guarda usuario
@@ -78,6 +78,7 @@ class Sqlauth:
         '''   
         
         # Seting credentials    
+        self.config['credentials']['app'] = app
         self.config['credentials']['sql_server'] = sql_server
         self.config['credentials']['host'] = host
         self.config['credentials']['port'] = port
@@ -88,7 +89,7 @@ class Sqlauth:
             self.config.write(configfile)
         
         ## Seteamos el password en sistema
-        keyring.set_password("sqlauth",
+        keyring.set_password(app,
                              user,
                              passwd)
     
@@ -107,6 +108,7 @@ class Sqlauth:
         
         def_conf = '''
         [credentials]
+            app=
             sql_server=
             host=
             port=
