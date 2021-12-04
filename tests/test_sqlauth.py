@@ -8,7 +8,7 @@ from click.testing import CliRunner
 
 from sqlauth import sqlauth
 from sqlauth import cli
-
+import configparser
 
 @pytest.fixture
 def response():
@@ -35,3 +35,33 @@ def test_command_line_interface():
     help_result = runner.invoke(cli.main, ['--help'])
     assert help_result.exit_code == 0
     assert '--help  Show this message and exit.' in help_result.output
+
+@pytest.fixture
+def temp_fileconf(tmpdir):
+    temp_fileconf = tmpdir.join("fileconf.txt")
+    
+    yield temp_fileconf
+
+def test_for_init_fileconf(temp_fileconf):
+    
+    fileconf = temp_fileconf
+    config = configparser.ConfigParser()
+    
+    auth = sqlauth.Sqlauth(fileconf)
+
+    auth.set_credentials(app='sqlauth',
+                         dialect='postgresql',
+                         host='localhost',
+                         port='5432',
+                         user='usuario',
+                         db_name='encuesta',
+                         passwd='1234')
+    
+    config.read(fileconf)
+    assert config['credentials']['app'] == 'sqlauth'
+    assert config['credentials']['dialect'] == 'postgresql'
+    assert config['credentials']['host'] == 'localhost'
+    assert config['credentials']['port'] == '5432'
+    assert config['credentials']['user'] == 'usuario'
+    assert config['credentials']['db_name'] == 'encuesta'
+
