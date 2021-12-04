@@ -65,10 +65,9 @@ class Sqlauth:
     def set_credentials(self, dialect, host, port, db_name, user, passwd, app='sqlauth'):
         ''' Set the credentials to connect to SQL DB
         
-        Setea el nombre de usuario y la contraseña para conectar_db. Solicita
-        al usuario que ingrese nombre de usuario y contraseña. Guarda usuario
-        en archivo de configuración config.txt.
-        
+        Save dialect, host, port, db_name, user and app in config file. Save password 
+        in system keyring.
+                
         Args:
             NULL
             
