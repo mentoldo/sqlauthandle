@@ -1,4 +1,4 @@
-"""Top-level package for sqlauth."""
+"""Top-level package for sqlauthandle."""
 
 __author__ = """Matías Adrián Alfonso"""
 __email__ = 'matias.alfonso@gmail.com'

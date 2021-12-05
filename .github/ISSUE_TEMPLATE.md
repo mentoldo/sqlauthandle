@@ -1,4 +1,4 @@
-* sqlauth version:
+* sqlauthandle version:
 * Python version:
 * Operating System:
 

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-from sqlauth.sqlauth import Sqlauth
+from sqlauthandle.sqlauthandle import Sqlauth
 import tkinter as tk
 import getpass
 
 def set_credentials():
     auth = Sqlauth()
     
-    app = input('App name [sqlauth]: ') or 'sqlauth'
+    app = input('App name [sqlauthandle]: ') or 'sqlauthandle'
     dialect = input('Dialect [postgresql]: ') or 'postgresql'
     host = input('Host [localhost]: ') or 'localhost'
     port = input('Port [5432]: ') or '5432'

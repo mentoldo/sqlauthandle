@@ -1,4 +1,4 @@
-Welcome to sqlauth's documentation!
+Welcome to sqlauthandle's documentation!
 ======================================
 
 .. toctree::

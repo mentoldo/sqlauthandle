@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use sqlauth in a project::
+To use sqlauthandle in a project::
 
-    import sqlauth
+    import sqlauthandle

@@ -62,14 +62,14 @@ class Sqlauth:
         return create_engine(sql_url)
     
     
-    def set_credentials(self, dialect, host, port, db_name, user, passwd, app='sqlauth'):
+    def set_credentials(self, dialect, host, port, db_name, user, passwd, app='sqlauthandle'):
         ''' Set the credentials to connect to SQL DB
         
         Save dialect, host, port, db_name, user and app in config file. Save password 
         in system keyring.
                 
         Args:
-            dialect (str): The dialect a to config sqlalchemy engine. Some options are `postgresql`,
+            dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`,
                 `mysql`, `oracle`, `mssql`. See 
                 Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
             host (str): Host url of DB server

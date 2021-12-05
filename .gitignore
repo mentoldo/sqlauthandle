@@ -107,3 +107,5 @@ ENV/
 
 # Auxiliar scripts
 auxiliares/
+raw_scripts/
+auth_config.txt

@@ -1,1 +1,1 @@
-"""Unit test package for sqlauth."""
+"""Unit test package for sqlauthandle."""
