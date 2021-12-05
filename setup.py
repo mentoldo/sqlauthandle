@@ -15,8 +15,7 @@ requirements = ['Click>=7.0',
                 'configparser',
                 'keyring',
                 'Path',
-                'tk',
-                'getpass']
+                'tk']
 
 test_requirements = ['pytest>=3', ]
 
