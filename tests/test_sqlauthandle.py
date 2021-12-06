@@ -42,26 +42,26 @@ def temp_fileconf(tmpdir):
     
     yield temp_fileconf
 
-def test_for_init_fileconf(temp_fileconf):
+# def test_for_init_fileconf(temp_fileconf):
     
-    fileconf = temp_fileconf
-    config = configparser.ConfigParser()
+#     fileconf = temp_fileconf
+#     config = configparser.ConfigParser()
     
-    auth = sqlauthandle.Sqlauth(fileconf)
+#     auth = sqlauthandle.Sqlauth(fileconf)
 
-    auth.set_credentials(app='sqlauthandle',
-                         dialect='postgresql',
-                         host='localhost',
-                         port='5432',
-                         user='usuario',
-                         db_name='encuesta',
-                         passwd='1234')
+#     auth.set_credentials(app='sqlauthandle',
+#                          dialect='postgresql',
+#                          host='localhost',
+#                          port='5432',
+#                          user='usuario',
+#                          db_name='encuesta',
+#                          passwd='1234')
     
-    config.read(fileconf)
-    assert config['credentials']['app'] == 'sqlauthandle'
-    assert config['credentials']['dialect'] == 'postgresql'
-    assert config['credentials']['host'] == 'localhost'
-    assert config['credentials']['port'] == '5432'
-    assert config['credentials']['user'] == 'usuario'
-    assert config['credentials']['db_name'] == 'encuesta'
+#     config.read(fileconf)
+#     assert config['credentials']['app'] == 'sqlauthandle'
+#     assert config['credentials']['dialect'] == 'postgresql'
+#     assert config['credentials']['host'] == 'localhost'
+#     assert config['credentials']['port'] == '5432'
+#     assert config['credentials']['user'] == 'usuario'
+#     assert config['credentials']['db_name'] == 'encuesta'
 
