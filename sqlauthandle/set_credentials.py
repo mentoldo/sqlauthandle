@@ -4,18 +4,17 @@ import tkinter as tk
 import getpass
 
 def set_credentials():
-    auth = Sqlauth()
-    
-    app = input('App name [sqlauthandle]: ') or 'sqlauthandle'
+    alias = input('Server alias[sqlauthandle]: ') or 'sqlauthandle'
     dialect = input('Dialect [postgresql]: ') or 'postgresql'
     host = input('Host [localhost]: ') or 'localhost'
     port = input('Port [5432]: ') or '5432'
     user = input('User: ')
     db_name = input('Database name: ')
     passwd = getpass.getpass('Password: ')
+
+    auth = Sqlauth(alias)
     
-    auth.set_credentials(app=app,
-                         dialect=dialect,
+    auth.set_credentials(dialect=dialect,
                          host=host,
                          port=port,
                          user=user,
@@ -23,8 +22,7 @@ def set_credentials():
                          passwd=passwd)
   
 #%%
-def gui_set_cred():
-    auth = Sqlauth()  
+def gui_set_cred(): 
     root=tk.Tk()
      
     # # setting the windows size
@@ -32,7 +30,7 @@ def gui_set_cred():
       
     # declaring string variable
     # for storing name and password
-    app_var=tk.StringVar()
+    alias_var=tk.StringVar()
     dialect_var=tk.StringVar()
     host_var=tk.StringVar()
     port_var=tk.StringVar()
@@ -45,7 +43,7 @@ def gui_set_cred():
     # print them on the screen
     def submit():
         
-        app=app_var.get()
+        alias=alias_var.get()
         dialect=dialect_var.get()
         host=host_var.get()
         port=port_var.get()
@@ -56,8 +54,9 @@ def gui_set_cred():
         # print("The name is : " + name)
         # print("The password is : " + password)    
         
-        auth.set_credentials(app=app,
-                             dialect=dialect,
+        auth = Sqlauth(alias) 
+        
+        auth.set_credentials(dialect=dialect,
                              host=host,
                              port=port,
                              db_name=db_name,
@@ -66,8 +65,8 @@ def gui_set_cred():
         root.destroy()
          
     # creating a label for
-    app_label = tk.Label(root, text = 'App', font=('calibre',10, 'bold'))
-    app_entry = tk.Entry(root,textvariable = app_var, font=('calibre',10,'normal'))
+    alias_label = tk.Label(root, text = 'alias', font=('calibre',10, 'bold'))
+    alias_entry = tk.Entry(root,textvariable = alias_var, font=('calibre',10,'normal'))
     
     dialect_label = tk.Label(root, text = 'Dialect+DBAPI', font=('calibre',10, 'bold'))
     dialect_entry = tk.Entry(root,textvariable = dialect_var, font=('calibre',10,'normal'))
@@ -98,8 +97,8 @@ def gui_set_cred():
     # placing the label and entry in
     # the required position using grid
     # method
-    app_label.grid(row=0,column=0)
-    app_entry.grid(row=0,column=1)
+    alias_label.grid(row=0,column=0)
+    alias_entry.grid(row=0,column=1)
     
     dialect_label.grid(row=1,column=0)
     dialect_entry.grid(row=1,column=1)

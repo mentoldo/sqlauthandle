@@ -11,19 +11,21 @@ class Sqlauth:
     Let you handle and save SQL DB authentication configuration information. 
     
     Args:
-        fileconf (str): String path to config file
+        alias (str): String identifier of the db conection.
         reset_file (bool): Remove `fileconf` before create a new one.
         
     Attributes:
-         self.fileconf (Path): ...
-         config (ConfigParser): ...
+        alias ('str'): ...
+        fileconf (Path): ...
+        config (ConfigParser): ...
     '''
     def __init__(self,
-                 fileconf='./auth_config.txt',
+                 alias='sqlauthandle',
                  reset_file=False):
         
         # seteamos la dirección del archivo de configuracion
-        self.fileconf = Path(fileconf)
+        self.alias = alias
+        self.fileconf = (Path('.sqlauthandle') / alias).with_suffix('.txt')
         self.config = configparser.ConfigParser()
         
         ## Intialize the config file if it does't exist
@@ -53,7 +55,7 @@ class Sqlauth:
         port = self.config['credentials']['port']
         db_name = self.config['credentials']['db_name']
         user = self.config['credentials']['user']
-        passwd = keyring.get_password(self.config['credentials']['app'], user)
+        passwd = keyring.get_password(self.config['credentials']['alias'], user)
         
         ## Conectamos a db
         sql_url = dialect + '://' + user + ':' + passwd + '@' + host + \
@@ -62,7 +64,7 @@ class Sqlauth:
         return create_engine(sql_url)
     
     
-    def set_credentials(self, dialect, host, port, db_name, user, passwd, app='sqlauthandle'):
+    def set_credentials(self, dialect, host, port, db_name, user, passwd):
         ''' Set the credentials to connect to SQL DB
         
         Save dialect, host, port, db_name, user and app in config file. Save password 
@@ -84,7 +86,7 @@ class Sqlauth:
         '''   
         
         # Seting credentials    
-        self.config['credentials']['app'] = app
+        self.config['credentials']['alias'] = self.alias
         self.config['credentials']['dialect'] = dialect
         self.config['credentials']['host'] = host
         self.config['credentials']['port'] = port
@@ -95,7 +97,7 @@ class Sqlauth:
             self.config.write(configfile)
         
         ## Seteamos el password en sistema
-        keyring.set_password(app,
+        keyring.set_password(self.alias,
                              user,
                              passwd)
     
@@ -114,13 +116,16 @@ class Sqlauth:
         
         def_conf = '''
         [credentials]
-            app=
+            alias=
             dialect=
             host=
             port=
             user=
             db_name=
         '''
+        if not self.fileconf.parent.is_dir():
+            self.fileconf.parent.mkdir()
+            
         self.config.read_string(def_conf)
         with open(self.fileconf, 'w') as configfile:
             self.config.write(configfile)
