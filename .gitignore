@@ -105,7 +105,9 @@ ENV/
 .vscode/
 .idea/
 
+# sqlauthandle
+.sqlauthandle/
+
 # Auxiliar scripts
 auxiliares/
 raw_scripts/
-auth_config.txt
