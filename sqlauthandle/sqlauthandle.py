@@ -12,7 +12,7 @@ class Sqlauth:
     
     Args:
         alias (str): String identifier of the db conection.
-        reset_file (bool): Remove `fileconf` before create a new one.
+        reset_file (bool): Remove the config file before create a new one.
         
     Attributes:
         alias ('str'): ...
@@ -65,24 +65,23 @@ class Sqlauth:
     
     
     def set_credentials(self, dialect, host, port, db_name, user, passwd):
-        ''' Set the credentials to connect to SQL DB
-        
+        ''' Set the credentials to connect to SQL DB.
+
         Save dialect, host, port, db_name, user and app in config file. Save password 
         in system keyring.
                 
         Args:
-            dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`,
-                `mysql`, `oracle`, `mssql`. See 
-                Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine
-            host (str): Host url of DB server
-            port (str): Port number
+            dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`, `mysql`, `oracle`, `mssql`.
+                See Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine  
+            host (str): Host url of DB server.  
+            port (str): Port number.
             db_name: Name of database to conect.
-            passwd: Password
-            app: Name of application. It is used to save the password in the system keyring
-                
+            passwd: Password.
+            app: Name of application. It is used to save the password in the system keyring.
+     
         Returns:
             NULL
-        
+
         '''   
         
         # Seting credentials    
@@ -105,7 +104,7 @@ class Sqlauth:
     def __init_configfile(self):
         ''' Initialize the config file 
         
-        Create a file named auth_config.txt in the working directory
+        Create a config file in .sqlauthandle folder with the alias name.
         
         Args:
             NULL

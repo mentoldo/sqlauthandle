@@ -20,7 +20,7 @@ sqlauthandle
 
 
 
-Python Boilerplate contains all the boilerplate you need to create a Python package.
+Easy manage Authentication on SQL DB.
 
 
 * Free software: MIT license
@@ -30,7 +30,14 @@ Python Boilerplate contains all the boilerplate you need to create a Python pack
 Features
 --------
 
-* TODO
+sqlauthandle lets you to simple and secure handle authentications of SQL DB servers.
+You can manage multiple server configurations in your project.
+It create config files and save the passwords in the keyring of your OS
+and create an `sqlalchemy <https://www.sqlalchemy.org/>`_ connection.
+
+
+.. include:: usage.rst
+
 
 Credits
 -------

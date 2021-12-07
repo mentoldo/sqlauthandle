@@ -5,7 +5,7 @@ Installation
 ============
 
 
-Stable release
+Stable release (Not yet)
 --------------
 
 To install sqlauthandle, run this command in your terminal:
