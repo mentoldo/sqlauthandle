@@ -33,7 +33,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
-    description="Python Boilerplate contains all the boilerplate you need to create a Python package.",
+    description="Easy manage Authentication on SQL DB.",
     entry_points={
         'console_scripts': [
             'sqlauthandle=sqlauthandle.cli:main',
