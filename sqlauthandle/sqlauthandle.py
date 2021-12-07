@@ -11,13 +11,13 @@ class Sqlauth:
     Let you handle and save SQL DB authentication configuration information. 
     
     Args:
-        alias (str): String identifier of the db conection.
-        reset_file (bool): Remove the config file before create a new one.
+        :alias (str): String identifier of the db conection.
+        :reset_file (bool): Remove the config file before create a new one.
         
     Attributes:
-        alias ('str'): ...
-        fileconf (Path): ...
-        config (ConfigParser): ...
+        :alias ('str'): String identifier of the db conection.
+        :fileconf (Path): The path to config file.
+        :config (ConfigParser): The ConfigParser with the config options.
     '''
     def __init__(self,
                  alias='sqlauthandle',
@@ -44,7 +44,7 @@ class Sqlauth:
             NULL
             
         Returns:
-            Return an _engine.Engine instance
+            Return an sqlalchemy.engine.base.Engine instance
         
         '''
         # fileconf='config.txt'
@@ -71,13 +71,13 @@ class Sqlauth:
         in system keyring.
                 
         Args:
-            dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`, `mysql`, `oracle`, `mssql`.
+            :dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`, `mysql`, `oracle`, `mssql`.
                 See Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine  
-            host (str): Host url of DB server.  
-            port (str): Port number.
-            db_name: Name of database to conect.
-            passwd: Password.
-            app: Name of application. It is used to save the password in the system keyring.
+            :host (str): Host url of DB server.  
+            :port (str): Port number.
+            :db_name: Name of database to conect.
+            :passwd: Password.
+            :app: Name of application. It is used to save the password in the system keyring.
      
         Returns:
             NULL
