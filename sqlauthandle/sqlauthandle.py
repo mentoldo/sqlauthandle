@@ -76,8 +76,8 @@ class Sqlauth:
             :host (str): Host url of DB server.  
             :port (str): Port number.
             :db_name: Name of database to conect.
-            :passwd: Password.
-            :app: Name of application. It is used to save the password in the system keyring.
+            :user: User
+            :passwd: Password
      
         Returns:
             NULL
