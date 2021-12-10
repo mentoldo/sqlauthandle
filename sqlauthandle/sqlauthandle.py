@@ -76,8 +76,8 @@ class Sqlauth:
             :host (str): Host url of DB server.  
             :port (str): Port number.
             :db_name: Name of database to conect.
-            :user: User
-            :passwd: Password
+            :user: User.
+            :passwd: Password.
      
         Returns:
             NULL
