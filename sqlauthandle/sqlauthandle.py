@@ -6,24 +6,25 @@ import keyring
 from pathlib import Path
 
 class Sqlauth:
-    ''' Authorization class to manage authentication in SQL Databases
+    ''' This class generates an authentication file for Databases. In this file is saved:
+        - Database provider: Postgres, for example.
+        - Username: user identification.
+        - Warning: It does not save any password in the file. However it access the computer to save it in the system.
     
-    Let you handle and save SQL DB authentication configuration information. 
+    
     
     Args:
         :alias (str): String identifier of the db conection.
-        :reset_file (bool): Remove the config file before create a new one.
+        :reset_file (bool): If true, the app will remove any file previusly created to update it with new information.
         
     Attributes:
-        :alias ('str'): String identifier of the db conection.
+        :alias ('str'):Name given to the conection. With this alias, the user will be able to interact with the aplication to validate her access to a chosen
         :fileconf (Path): The path to config file.
         :config (ConfigParser): The ConfigParser with the config options.
     '''
-    def __init__(self,
-                 alias='sqlauthandle',
-                 reset_file=False):
+    def __init__(self, alias='sqlauthandle', reset_file=False):
         
-        # seteamos la dirección del archivo de configuracion
+        ## Recives config data to generarate the authenticator
         self.alias = alias
         self.fileconf = (Path('.sqlauthandle') / alias).with_suffix('.txt')
         self.config = configparser.ConfigParser()
@@ -34,22 +35,26 @@ class Sqlauth:
         
         self.config.read(self.fileconf)
 
-
-    def conect_db(self):
-        ''' Create a SQL DB conection
+    ## After the config file with information has been created
+    ## this funcion can be alled to connect the Database
+    def connect_db(self):
+        ''' Takes the config file already created and saved in the package directory
+            to create a connection to the cosen database. No further information is
+            needed to run this funcion as it takes a config file named after the alias
+            to use the information needed.
         
-        Create a SQL DB conection with object setted parameters
+        
         
         Args:
             NULL
             
         Returns:
-            Return an sqlalchemy.engine.base.Engine instance
+            Return an sqlalchemy.engine.base.Engine instance capable of opening the Database.
         
         '''
-        # fileconf='config.txt'
         
-        ## Read configuracion
+        
+        ## Reads configuracion file 
         dialect = self.config['credentials']['dialect']
         host = self.config['credentials']['host']
         port = self.config['credentials']['port']
@@ -57,26 +62,27 @@ class Sqlauth:
         user = self.config['credentials']['user']
         passwd = keyring.get_password(self.config['credentials']['alias'], user)
         
-        ## Conectamos a db
+        ## Generates a url to connect to the Database
         sql_url = dialect + '://' + user + ':' + passwd + '@' + host + \
                   ':' + port + '/' + db_name
-    
+
         return create_engine(sql_url)
     
     
     def set_credentials(self, dialect, host, port, db_name, user, passwd):
-        ''' Set the credentials to connect to SQL DB.
+        ''' Sets the credentials to connect to a SQL DB.
 
-        Save dialect, host, port, db_name, user and app in config file. Save password 
-        in system keyring.
+        The user provides with the information to the aplication.
+        This is the main funcion to create credential for the user.
+        Here you provide the specific information needed in the database.
                 
         Args:
             :dialect (str): The dialect to config sqlalchemy engine. Some options are `postgresql`, `mysql`, `oracle`, `mssql`.
                 See Sql Alchemy docs: https://docs.sqlalchemy.org/en/14/core/engines.html#sqlalchemy.create_engine  
             :host (str): Host url of DB server.  
-            :port (str): Port number.
-            :db_name: Name of database to conect.
-            :passwd: Password.
+            :port (str): Port number. An example is: 5432 for postgres or localhost in case the DB is run locally.
+            :db_name: Name of database to conect. This has to be the name given to the DB, not the alias chosen in the App.
+            :passwd: Password. If run on bash, it wont be shown, However, if the user is using IPython, it wont be hidden while writing.
             :app: Name of application. It is used to save the password in the system keyring.
      
         Returns:
@@ -95,7 +101,7 @@ class Sqlauth:
         with open(self.fileconf, 'w') as configfile:
             self.config.write(configfile)
         
-        ## Seteamos el password en sistema
+        ## Seves password on computer system.
         keyring.set_password(self.alias,
                              user,
                              passwd)
@@ -104,7 +110,7 @@ class Sqlauth:
     def __init_configfile(self):
         ''' Initialize the config file 
         
-        Create a config file in .sqlauthandle folder with the alias name.
+        The App creates a config file to be filled with information provided by the user.
         
         Args:
             NULL

@@ -4,6 +4,12 @@ import tkinter as tk
 import getpass
 
 def set_credentials():
+    """Funcion designed to recive the user data and encript the password while creating a config file.
+        It integrates with other function of the package to facilitate the usage of it.
+        To facilitate user experience this app generates a Graphical user interphase.
+    """
+    
+    ## Recives data
     alias = input('Server alias[sqlauthandle]: ') or 'sqlauthandle'
     dialect = input('Dialect [postgresql]: ') or 'postgresql'
     host = input('Host [localhost]: ') or 'localhost'
@@ -13,7 +19,7 @@ def set_credentials():
     passwd = getpass.getpass('Password: ')
 
     auth = Sqlauth(alias)
-    
+    ## Actually generates the process
     auth.set_credentials(dialect=dialect,
                          host=host,
                          port=port,
@@ -22,6 +28,7 @@ def set_credentials():
                          passwd=passwd)
   
 #%%
+## Generates a GIU to set the data with visual window
 def gui_set_cred(): 
     root=tk.Tk()
      
@@ -37,7 +44,7 @@ def gui_set_cred():
     db_name_var=tk.StringVar()
     user_var=tk.StringVar()
     passw_var=tk.StringVar()
-     
+    
     # defining a function that will
     # get the name and password and
     # print them on the screen
@@ -50,9 +57,7 @@ def gui_set_cred():
         db_name=db_name_var.get()
         user=user_var.get()
         passwd=passw_var.get()
-         
-        # print("The name is : " + name)
-        # print("The password is : " + password)    
+        
         
         auth = Sqlauth(alias) 
         
@@ -63,14 +68,14 @@ def gui_set_cred():
                              user=user,
                              passwd=passwd)
         root.destroy()
-         
+    
     # creating a label for
     alias_label = tk.Label(root, text = 'alias', font=('calibre',10, 'bold'))
     alias_entry = tk.Entry(root,textvariable = alias_var, font=('calibre',10,'normal'))
     
     dialect_label = tk.Label(root, text = 'Dialect+DBAPI', font=('calibre',10, 'bold'))
     dialect_entry = tk.Entry(root,textvariable = dialect_var, font=('calibre',10,'normal'))
-      
+    
     host_label = tk.Label(root, text = 'Host', font=('calibre',10, 'bold'))
     host_entry = tk.Entry(root,textvariable = host_var, font=('calibre',10,'normal'))
     
@@ -85,7 +90,7 @@ def gui_set_cred():
     
     passw_label = tk.Label(root, text = 'Password', font = ('calibre',10,'bold'))
     passw_entry=tk.Entry(root, textvariable = passw_var, font = ('calibre',10,'normal'), show = '*')
-      
+    
     # creating a button using the widget
     # Button that will call the submit function
     sub_btn=tk.Button(root,text = 'Submit', command = submit)
@@ -120,7 +125,7 @@ def gui_set_cred():
     
     sub_btn.grid(row=7,column=1)
     q_btn.grid(row=7, column=2)
-      
+    
     # performing an infinite loop
     # for the window to display
     root.mainloop()
