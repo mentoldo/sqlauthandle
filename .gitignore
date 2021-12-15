@@ -111,3 +111,7 @@ ENV/
 # Auxiliar scripts
 auxiliares/
 raw_scripts/
+
+
+# mariano
+test_credential.py
